@@ -23,9 +23,21 @@ namespace Assignment2.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult RestaurantView()
         {
-            return View();
+            var viewModel = new RestaurantViewModel();
+            return View(viewModel);
+        }
+
+        public IActionResult KitchenView()
+        {
+            var viewModel = new KitchenViewModel();
+            return View(viewModel);
+        }
+        public IActionResult ReceptionView()
+        {
+            var viewModel = new ReceptionViewModel();
+            return View(viewModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

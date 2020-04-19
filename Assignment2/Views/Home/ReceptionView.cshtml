@@ -1,0 +1,39 @@
+﻿@model Assignment2.Models.ReceptionViewModel
+@{
+    ViewData["Title"] = "ReceptionView";
+}
+
+<div class="col-8">
+    <div class="row">
+        <button type="button" class="btn btn-primary" asp-controller="Home" asp-action="">Create breakfast order</button>
+    </div>
+    <div class="row">
+        <h2>Checked in to breakfast</h2>
+    </div>
+    <div class="row border-dark border">
+        <div class="col border-dark border-right">
+            Room Number:
+        </div>
+        <div class="col border-dark border-right">
+            Adults
+        </div>
+        <div class="col border-dark">
+            Kids
+        </div>
+    </div>
+    @foreach (var order in Model.BreakfastOrders.Where(b => b.Date == DateTime.Today && b.State == BreakfastOrder.OrderState.CheckedIn))
+    {
+        <div class="row border-dark border border-top-0">
+            <div class="col border-dark border-right">
+                @order.RoomNumber
+            </div>
+            <div class="col border-dark border-right">
+                @order.AmountAdults
+            </div>
+            <div class="col border-dark">
+                @order.AmountKids
+            </div>
+        </div>
+    }
+</div>
+
