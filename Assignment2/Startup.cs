@@ -1,6 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Security.Claims;
+using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -9,6 +13,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Assignment2.Data;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -38,12 +44,14 @@ namespace Assignment2
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+                SeedRoles(roleManager).GetAwaiter().GetResult();
+                SeedAdmin(userManager).GetAwaiter().GetResult();
             }
             else
             {
@@ -51,6 +59,7 @@ namespace Assignment2
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -67,6 +76,32 @@ namespace Assignment2
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+        }
+
+        private async Task SeedAdmin(UserManager<IdentityUser> userManager)
+        {
+            var user = new IdentityUser
+            {
+                UserName = Configuration["AppSettings:UserEmail"], 
+                Email = Configuration["AppSettings:UserEmail"], 
+                EmailConfirmed = true, 
+                LockoutEnabled = false
+            };
+            var result = await userManager.CreateAsync(user, Configuration["AppSettings:Password"]);
+            if (result.Succeeded) await userManager.AddToRoleAsync(user, "Administrator");
+        }
+
+        public static async Task SeedRoles(RoleManager<IdentityRole> roleManager)
+        {
+            var roles = new[] { "Administrator", "Kitchen", "Waiter", "Reception" };
+
+            foreach (var role in roles)
+            {
+                if (roleManager.RoleExistsAsync(role).Result == false)
+                {
+                    await roleManager.CreateAsync(new IdentityRole(role));
+                }
+            }
         }
     }
 }
