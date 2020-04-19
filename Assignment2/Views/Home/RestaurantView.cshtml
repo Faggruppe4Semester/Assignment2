@@ -1,0 +1,31 @@
+﻿@model Assignment2.Models.RestaurantViewModel
+@{
+    ViewData["Title"] = "RestaurantView";
+}
+
+<div class="col-sm-12">
+    <form id="checkInForm" action="" method="post">
+        <div class="row justify-content-center">
+            <label for="roomNumber">Room number:</label>
+        </div>
+        <div class="row justify-content-center">
+            <input type="text" id="roomNumber" name="roomNumber" />
+        </div>
+        <div class="row justify-content-center">
+            <label for="amountAdults">Adults:</label>
+        </div>
+        <div class="row justify-content-center">
+            <input type="text" id="amountAdults" name="amountAdults" />
+        </div>
+        <div class="row justify-content-center">
+            <label for="amountKids">Kids</label>
+        </div>
+        <div class="row justify-content-center">
+            <input type="text" id="amountKids" name="amountKids" />
+        </div>
+        <div class="row justify-content-center">
+            <input type="submit" value="Check In" id="submit" class="btn btn-primary"/>
+        </div>
+    </form>
+</div>
+

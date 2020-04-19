@@ -1,0 +1,63 @@
+﻿@model Assignment2.Models.KitchenViewModel
+@{
+    ViewData["Title"] = "KitchenView";
+    var expectedAdults = Model.GetExpectedAdults(DateTime.Today);
+    var expectedKids = Model.GetExpectedKids(DateTime.Today);
+    var expectedTotal = expectedKids + expectedAdults;
+    var adultsCheckedIn = Model.GetCheckedInAdults(DateTime.Today);
+    var kidsCheckedIn = Model.GetCheckedInKids(DateTime.Today);
+    var checkedInTotal = adultsCheckedIn + kidsCheckedIn;
+    var adultsNotCheckedIn = Model.GetNotCheckedInAdults(DateTime.Today);
+    var kidsNotCheckedIn = Model.GetNotCheckedInKids(DateTime.Today);
+    var notCheckedInTotal = adultsNotCheckedIn + kidsNotCheckedIn;
+    
+}
+<div class="row">
+    <form id="updateKitchen" action="" method="get">
+        <input type="date" id="date" name="date"/>
+        <input type="submit" value="Update" id="submit" class="btn btn-primary"/>
+    </form>
+</div>
+<div class="row">
+    <h2>Expected Guests</h2>
+</div>
+<div class="row">
+    <div class="col-lg-2 col-md-3 border-dark border">
+        Adults: @expectedAdults
+    </div>
+    <div class="col-lg-2 col-md-3 border-dark border border-left-0">
+        Kids: @expectedKids
+    </div>
+    <div class="col-lg-2 col-md-3 border-dark border border-left-0">
+        Total: @expectedTotal
+    </div>
+</div>
+<div class="row">
+    <h2>Checked In</h2>
+</div>
+<div class="row">
+    <div class="col-lg-2 col-md-3 border-dark border">
+        Adults: @adultsCheckedIn
+    </div>
+    <div class="col-lg-2 col-md-3 border-dark border border-left-0">
+        Kids: @kidsCheckedIn
+    </div>
+    <div class="col-lg-2 col-md-3 border-dark border border-left-0">
+        Total: @checkedInTotal
+    </div>
+</div>
+<div class="row">
+    <h2>Not Checked In</h2>
+</div>
+<div class="row">
+    <div class="col-lg-2 col-md-3 border-dark border">
+        Adults: @adultsNotCheckedIn
+    </div>
+    <div class="col-lg-2 col-md-3 border-dark border border-left-0">
+        Kids: @kidsNotCheckedIn
+    </div>
+    <div class="col-lg-2 col-md-3 border-dark border border-left-0">
+        Total: @notCheckedInTotal
+    </div>
+</div>
+
