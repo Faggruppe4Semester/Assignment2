@@ -30,6 +30,7 @@ namespace Assignment2.Models
 
         public DateTime Date { get; set; }
         public OrderState State { get; set; }
+        
         public int RoomNumber { get; set; }
         public int AmountAdults { get; set; }
         public int AmountKids { get; set; }

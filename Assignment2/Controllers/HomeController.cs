@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Assignment2.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Assignment2.Models;
@@ -13,10 +14,12 @@ namespace Assignment2.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
@@ -36,10 +39,10 @@ namespace Assignment2.Controllers
             return View(viewModel);
         }
 
-        [Authorize(Roles = "Reception")]
+        [Authorize(Roles = "Reception,Administrator")]
         public IActionResult ReceptionView()
         {
-            var viewModel = new ReceptionViewModel();
+            var viewModel = new ReceptionViewModel(_context);
             return View(viewModel);
         }
 

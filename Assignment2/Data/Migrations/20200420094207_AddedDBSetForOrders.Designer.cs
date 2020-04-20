@@ -4,14 +4,16 @@ using Assignment2.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Assignment2.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200420094207_AddedDBSetForOrders")]
+    partial class AddedDBSetForOrders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,22 +23,20 @@ namespace Assignment2.Data.Migrations
 
             modelBuilder.Entity("Assignment2.Models.BreakfastOrder", b =>
                 {
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("RoomNumber")
-                        .HasColumnType("int");
-
                     b.Property<int>("AmountAdults")
                         .HasColumnType("int");
 
                     b.Property<int>("AmountKids")
                         .HasColumnType("int");
 
-                    b.Property<int>("State")
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("RoomNumber")
                         .HasColumnType("int");
 
-                    b.HasKey("Date", "RoomNumber");
+                    b.Property<int>("State")
+                        .HasColumnType("int");
 
                     b.ToTable("BreakfastOrders");
                 });
