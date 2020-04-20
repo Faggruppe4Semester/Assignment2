@@ -45,7 +45,6 @@ namespace Assignment2.Areas.Identity.Pages.Account
         }
 
         [BindProperty]
-
         public InputModel Input { get; set; }
 
         public string ReturnUrl { get; set; }
@@ -71,10 +70,10 @@ namespace Assignment2.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
 
             [Required]
-            public SelectListItem SelectedRole { get; set; }
+            public string SelectedRole { get; set; }
         }
 
-        public List<SelectListItem> RoleList => _context.Roles.Select(role => new SelectListItem(role.Name, role.Id)).ToList();
+        public List<SelectListItem> RoleList => _context.Roles.Select(role => new SelectListItem(role.Name, role.Name)).ToList();
 
         public async Task OnGetAsync(string returnUrl = null)
         {
@@ -105,7 +104,7 @@ namespace Assignment2.Areas.Identity.Pages.Account
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
                     
-                    await _userManager.AddToRoleAsync(user, Input.SelectedRole.Value);
+                    await _userManager.AddToRoleAsync(user, Input.SelectedRole);
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
