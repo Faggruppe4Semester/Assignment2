@@ -7,6 +7,7 @@
     <div class="row">
         <a class="btn btn-primary" asp-controller="Home" asp-action="CreateBreakfastOrder">Create Breakfast Order</a>
     </div>
+
     <div class="row">
         <h2>Checked in to breakfast</h2>
     </div>
@@ -21,19 +22,22 @@
             Kids
         </div>
     </div>
-    @foreach (var order in Model.BreakfastOrders.Where(b => b.Date == DateTime.Today && b.State == BreakfastOrder.OrderState.CheckedIn))
+    @foreach (var order in Model.BreakfastOrders)
     {
-        <div class="row border-dark border border-top-0">
-            <div class="col border-dark border-right">
-                @order.RoomNumber
+        @if (order.KidsCheckedIn != 0 && order.AdultsCheckedIn != 0)
+        {
+            <div class="row border-dark border border-top-0">
+                <div class="col border-dark border-right">
+                    @order.RoomNumber
+                </div>
+                <div class="col border-dark border-right">
+                    @order.AdultsCheckedIn
+                </div>
+                <div class="col border-dark">
+                    @order.KidsCheckedIn
+                </div>
             </div>
-            <div class="col border-dark border-right">
-                @order.AmountAdults
-            </div>
-            <div class="col border-dark">
-                @order.AmountKids
-            </div>
-        </div>
+        }
     }
 </div>
 

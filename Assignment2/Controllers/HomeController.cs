@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using Assignment2.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Assignment2.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace Assignment2.Controllers
 {
@@ -26,31 +28,44 @@ namespace Assignment2.Controllers
         {
             return View();
         }
-        [Authorize(Roles = "Waiter")]
+        [Authorize(Roles = "Waiter,Administrator")]
         public IActionResult RestaurantView()
         {
-            var viewModel = new RestaurantViewModel();
+            ViewData["Context"] = _context;
+            var viewModel = new RestaurantViewModel(_context);
             return View(viewModel);
         }
-        [Authorize(Roles = "Kitchen")]
+        [Authorize(Roles = "Kitchen,Administrator")]
         public IActionResult KitchenView()
         {
-            var viewModel = new KitchenViewModel();
-            return View(viewModel);
+            try
+            {
+                string requestString = Request.QueryString.Value;
+                var date = (requestString == "" ? DateTime.Today : DateTime.Parse(HttpUtility.ParseQueryString(requestString).Get("date")));
+                var viewModel = new KitchenViewModel(_context,date);
+                return View(viewModel);
+            }
+            catch (Exception e)
+            {
+                var viewModel = new KitchenViewModel(_context, DateTime.Today);
+                return View(viewModel);
+            }
+            ;
         }
 
         [Authorize(Roles = "Reception,Administrator")]
         public IActionResult ReceptionView()
         {
+            ViewData["Context"] = _context;
             var viewModel = new ReceptionViewModel(_context);
             return View(viewModel);
         }
 
-        [Authorize(Roles = "Reception")]
+        [Authorize(Roles = "Reception,Administrator")]
         public IActionResult CreateBreakfastOrder()
         {
-            var obj = new BreakfastOrder();
-            return View(obj);
+            ViewData["Context"] = _context;
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -58,5 +73,7 @@ namespace Assignment2.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
     }
 }

@@ -14,6 +14,9 @@ namespace Assignment2.Data
         {
         }
 
+        public ApplicationDbContext()
+        { }
+
         public DbSet<BreakfastOrder> BreakfastOrders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)

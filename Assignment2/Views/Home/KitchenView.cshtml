@@ -1,14 +1,17 @@
-﻿@model Assignment2.Models.KitchenViewModel
+﻿@using System.Web
+@model Assignment2.Models.KitchenViewModel
 @{
     ViewData["Title"] = "KitchenView";
-    var expectedAdults = Model.GetExpectedAdults(DateTime.Today);
-    var expectedKids = Model.GetExpectedKids(DateTime.Today);
+    var date = Model.Date;
+    var orders = Model.GetBreakfastOrders();
+    var expectedAdults = Model.GetExpectedAdults();
+    var expectedKids = Model.GetExpectedKids();
     var expectedTotal = expectedKids + expectedAdults;
-    var adultsCheckedIn = Model.GetCheckedInAdults(DateTime.Today);
-    var kidsCheckedIn = Model.GetCheckedInKids(DateTime.Today);
+    var adultsCheckedIn = Model.GetCheckedInAdults();
+    var kidsCheckedIn = Model.GetCheckedInKids();
     var checkedInTotal = adultsCheckedIn + kidsCheckedIn;
-    var adultsNotCheckedIn = Model.GetNotCheckedInAdults(DateTime.Today);
-    var kidsNotCheckedIn = Model.GetNotCheckedInKids(DateTime.Today);
+    var adultsNotCheckedIn = Model.GetNotCheckedInAdults();
+    var kidsNotCheckedIn = Model.GetNotCheckedInKids();
     var notCheckedInTotal = adultsNotCheckedIn + kidsNotCheckedIn;
     
 }

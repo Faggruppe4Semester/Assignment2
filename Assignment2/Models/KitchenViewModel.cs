@@ -2,54 +2,60 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Assignment2.Data;
 
 namespace Assignment2.Models
 {
     public class KitchenViewModel
     {
-        public KitchenViewModel()
+        public KitchenViewModel(ApplicationDbContext context,DateTime date)
         {
+            Date = date;
+            _context = context;
             BreakfastOrders = new List<BreakfastOrder>();
-            BreakfastOrders.Add(new BreakfastOrder(47, 2, 0,DateTime.Today));
-            BreakfastOrders.Add(new BreakfastOrder(25, 2, 2, DateTime.Today));
+        }
 
+        public List<BreakfastOrder> GetBreakfastOrders()
+        {
+            BreakfastOrders = _context.BreakfastOrders.Where(BO => BO.Date == Date).ToList();
+            return BreakfastOrders;
         }
 
         public List<BreakfastOrder> BreakfastOrders { get; set; }
+        private readonly ApplicationDbContext _context;
+        public DateTime Date { get; set; }
 
-        public int GetCheckedInAdults(DateTime date)
+        public int GetCheckedInAdults()
         {
             int total = 0;
-            foreach (var breakfastOrder in BreakfastOrders.Where(b=> b.Date == date))
+            foreach (var breakfastOrder in BreakfastOrders)
             {
-                if (breakfastOrder.State == BreakfastOrder.OrderState.CheckedIn)
-                    total += breakfastOrder.AmountAdults;
+                total += breakfastOrder.AdultsCheckedIn;
             }
             return total;
         }
 
-        public int GetCheckedInKids(DateTime date)
+        public int GetCheckedInKids()
         {
             int total = 0;
-            foreach (var breakfastOrder in BreakfastOrders.Where(b =>b.Date == date))
+            foreach (var breakfastOrder in BreakfastOrders)
             {
-                if (breakfastOrder.State == BreakfastOrder.OrderState.CheckedIn)
-                    total += breakfastOrder.AmountKids;
+                total += breakfastOrder.KidsCheckedIn;
             }
             return total;
         }
 
-        public int GetExpectedAdults(DateTime date)
+        public int GetExpectedAdults()
         {
             int total = 0;
-            foreach (var breakfastOrder in BreakfastOrders.Where(b =>b.Date == date))
+            foreach (var breakfastOrder in BreakfastOrders)
             {
                 total += breakfastOrder.AmountAdults;
             }
             return total;
         }
 
-        public int GetExpectedKids(DateTime date)
+        public int GetExpectedKids()
         {
             int total = 0;
             foreach (var breakfastOrder in BreakfastOrders)
@@ -59,25 +65,24 @@ namespace Assignment2.Models
             return total;
         }
 
-        public int GetNotCheckedInAdults(DateTime date)
+        public int GetNotCheckedInAdults()
         {
             int total = 0;
-            foreach (var breakfastOrder in BreakfastOrders.Where(b => b.Date == date))
+            foreach (var breakfastOrder in BreakfastOrders)
             {
-                if (breakfastOrder.State == BreakfastOrder.OrderState.NotCheckedIn)
-                    total += breakfastOrder.AmountAdults;
+                total += breakfastOrder.AmountAdults - breakfastOrder.AdultsCheckedIn;
             }
             return total;
         }
 
-        public int GetNotCheckedInKids(DateTime date)
+        public int GetNotCheckedInKids()
         {
             int total = 0;
-            foreach (var breakfastOrder in BreakfastOrders.Where(b => b.Date == date))
+            foreach (var breakfastOrder in BreakfastOrders)
             {
-                if (breakfastOrder.State == BreakfastOrder.OrderState.NotCheckedIn)
-                    total += breakfastOrder.AmountKids;
+                total += breakfastOrder.AmountKids - breakfastOrder.KidsCheckedIn;
             }
+
             return total;
         }
     }
